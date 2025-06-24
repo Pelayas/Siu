@@ -10,7 +10,7 @@ struct Venta{
     char Cliente[30];
     int cedula;
     int productos;
-    int venta;
+    float venta;
 };
 
 struct Venta Ventas[30];
@@ -60,12 +60,16 @@ void enlistarproductos()
 
 void venta()
 {   
-    printf("Ingrese el nombre del cliente\n");
+
+    int opc;
+
+    printf("Ingrese el nombre del cliente: ");
+    getchar();
     fgets(Ventas[contadorventas].Cliente, 30, stdin);
     eliminar(Ventas[contadorventas].Cliente);
 
-    printf("Ingrese la cedula del cliente\n");
-    scanf("%d", Ventas[contadorventas].cedula);
+    printf("Ingrese la cedula del cliente: ");
+    scanf("%d", &Ventas[contadorventas].cedula);
 
     printf("Elija el producto que desearia comprar\n");
 
@@ -73,11 +77,24 @@ void venta()
     printf("\n");
     Producto2();
 
+    printf("Seleccione entre 1 y 2 >>");
+    scanf("%d", &opc);
+
     printf("Cuantos productos desea vender: ");
-    scanf("%d", Ventas[contadorventas].productos);
+    scanf("%d", &Ventas[contadorventas].productos);
 
-    Ventas[contadorventas].venta = Ventas[contadorventas].productos ;
+    if (opc == 1)
+    {
+        Ventas[contadorventas].venta = Ventas[contadorventas].productos * 3.45;
+    }else if(opc == 2){
+        Ventas[contadorventas].venta = Ventas[contadorventas].productos * 1.75;
+    }else{
+        printf("Opcion invalida\n");
+    }
 
+    printf("El precio total de la venta es de %.2f", Ventas[contadorventas].venta);
+
+    contadorventas ++;
 
 }
 
