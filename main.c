@@ -11,6 +11,7 @@ struct Venta{
     int cedula;
     int productos;
     float venta;
+    int productoID;
 };
 
 struct Venta Ventas[30];
@@ -80,6 +81,8 @@ void venta()
     printf("Seleccione entre 1 y 2 >>");
     scanf("%d", &opc);
 
+    Ventas[contadorventas].productoID = opc;
+
     printf("Cuantos productos desea vender: ");
     scanf("%d", &Ventas[contadorventas].productos);
 
@@ -98,14 +101,76 @@ void venta()
 
 }
 
+void imprimirventa ()
+{
+
+    printf("------------------------------------------------------------------------------------------------------------------------------------------");
+
+
+    printf("\n%-8s %-22s %-22s %-22s %-20s %-8s\n", "#Venta", "#Nombre del cliente", "#Cedula del cliente", "#Producto Adquirido", "#Productos Vendidos", "#Total");
+
+    for (int i = 0; i < contadorventas; i++) {
+
+        printf("------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+        const char* producto = (Ventas[i].productoID == 1) ? "Pasta de dientes" : "Conflex";
+
+        printf("%-8d %-22s %-22d %-22s %-20d %-8.2f\n", i + 1
+                                                  , Ventas[i].Cliente
+                                                  , Ventas[i].cedula
+                                                  , producto 
+                                                  , Ventas[i].productos
+                                                  , Ventas[i].venta);
+    }
+
+    printf("------------------------------------------------------------------------------------------------------------------------------------------\n");
+}
+
+void buscarventa()
+{
+
+    int buscarcedula;
+    int encontrado;
+
+
+    printf("Ingrese el numero de cedula del cliente: ");
+    scanf("%d", &buscarcedula);
+
+    for(int i = 0; i < contadorventas; i ++)
+    {
+        if (Ventas[i].cedula == buscarcedula)
+        {
+            encontrado = 1;
+            const char* producto = (Ventas[i].productoID == 1) ? "Pasta de dientes" : "Conflex";
+
+            printf("\nVenta encontrada:\n");
+            printf("Cliente: %s\n", Ventas[i].Cliente);
+            printf("Cedula: %d\n", Ventas[i].cedula);
+            printf("Producto: %s\n", producto);
+            printf("Cantidad vendida: %d\n", Ventas[i].productos);
+            printf("Total: %.2f\n", Ventas[i].venta);
+
+        }
+    }
+
+    if(encontrado = 0)
+    {
+        printf("No se encontraron ventas para la cedula %d\n", buscarcedula);
+    }
+    
+}
+
 int menu()
 {
     int opc; 
 
-    printf("MENU\n");
+    printf("\nMENU\n");
     printf("1. Visualizar Productos\n");
     printf("2. Realizar Venta\n");
-    printf(">>");
+    printf("3. Enlistar Ventas\n");
+    printf("4. Buscar Venta\n");
+    printf("5. Salir del programa\n");
+    printf(">> ");
     scanf("%d", &opc);
 
     return opc;
@@ -116,22 +181,39 @@ int main()
 
     int opc;
 
-    opc = menu();
-
-    switch (opc)
+    do
     {
-    case 1:
-        enlistarproductos();
-        break;
-    
-    case 2:
-        venta();
+        opc = menu();
+
+        switch (opc)
+        {
+        case 1:
+            enlistarproductos();
+
+            break;
+
+        case 2:
+            venta();
+
+            break;
         
-        break;
-    
-    default:
-        break;
-    }
+        case 3: 
+            imprimirventa();
+
+            break;
+
+        case 4:
+            buscarventa();
+
+            break;
+
+        case 5:
+            printf("Saliendo del programa...");
+
+        default:
+            break;
+        }
+    } while (opc != 5);
 
     return 0;
 }
